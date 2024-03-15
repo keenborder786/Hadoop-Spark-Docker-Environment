@@ -7,7 +7,7 @@ services:
         - "9870:9870"
         - "8088:8088"
     command: > 
-      bash -c "hdfs --daemon start namenode & yarn --daemon start resourcemanager "
+      bash -c "hdfs --daemon start namenode & yarn --daemon start resourcemanager & tail -f /dev/null"
     hostname: hdfs-namenode
 
   datanode:
@@ -17,7 +17,7 @@ services:
     depends_on: 
         - namenode
     command: >
-      bash -c "hdfs --daemon start datanode & yarn --daemon start nodemanager "
+      bash -c "hdfs --daemon start datanode & yarn --daemon start nodemanager & tail -f /dev/null"
     ports:
       - "9864:9864"
 
@@ -25,6 +25,6 @@ services:
   secondarynamenode:
     build:
       context: ./hadoop
-    command: hdfs --daemon start secondarynamenode
+    command: bash -c "hdfs --daemon start secondarynamenode & tail -f /dev/null"
     ports:
         - "9868:9868"
