@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  namenode:
+    build:
+      context: .
+    ports: 
+        - "9870:9870"
+        - "8088:8088"
+    command: > 
+      bash -c "hdfs --daemon start namenode & yarn --daemon start resourcemanager "
+    hostname: hdfs-namenode
+
+  datanode:
+    build:
+      context: .
+    hostname: datanode
+    depends_on: 
+        - namenode
+    command: >
+      bash -c "hdfs --daemon start datanode & yarn --daemon start nodemanager "
+    ports:
+      - "9864:9864"
+
+
+  secondarynamenode:
+    build:
+      context: .
+    command: hdfs --daemon start secondarynamenode
+    ports:
+        - "9868:9868"
